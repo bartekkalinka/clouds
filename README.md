@@ -12,8 +12,11 @@ Added to github for further experiments with gameplay, branching into other game
 #### How to build and run
 
 cd clouds_main
+
 mvn install
+
 cd ..
+
 clouds.cmd (on windows)
 
 #### How to play
