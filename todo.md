@@ -6,3 +6,4 @@
     - [ ] write some tests
     - [ ] way to visualise some collision tests etc.
 - [ ] branch into a game with clouds + land islands
+- [ ] branch: implement collisions between clouds and try a variant of original game where clouds bounce off each other
