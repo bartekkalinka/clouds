@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Clouds implements KeyListener {
+public class Clouds implements KeyListener, Orientation {
 
 	private double zoom = 0.75;
 	private double screenOnMapX = 0;

@@ -23,8 +23,8 @@ public class Cloud extends GameObject {
 	
 	protected boolean destroyed;
 	
-	Cloud(Clouds agame, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
-		super(agame, ax, ay);
+	public Cloud(Orientation orient, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
+		super(orient, ax, ay);
 		color = aColor;
 		sizex = aSizeX;
 		sizey = aSizeY;

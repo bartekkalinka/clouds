@@ -1,9 +1,13 @@
+- [ ] write unit tests for existing code
+    - [x] start a branch
+    - [ ] write some tests
+        - [ ] first test: Cloud new
+            - [ ] reconfigure to compile
+        - [ ] more tests
+    - [ ] way to visualise some collision tests etc.
+- [ ] write javadocs
 - [ ] CloudApplet module
     - [ ] prepare a deployable build
     - [ ] add to github
-- [ ] write unit tests for existing code
-    - [ ] start a branch
-    - [ ] write some tests
-    - [ ] way to visualise some collision tests etc.
 - [ ] branch into a game with clouds + land islands
 - [ ] branch: implement collisions between clouds and try a variant of original game where clouds bounce off each other

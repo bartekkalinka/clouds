@@ -6,10 +6,10 @@ public class GameObject {
 	protected double y;
 	protected double vx;
 	protected double vy;
-	protected Clouds game;
+	protected Orientation orient;
 	
-	GameObject(Clouds agame, double ax, double ay) {
-		game = agame;
+	GameObject(Orientation aorient, double ax, double ay) {
+		orient = aorient;
 		x = ax;
 		y = ay;
 		vx = 0;
@@ -27,23 +27,23 @@ public class GameObject {
 	}
 	
 	public int getTileSize() {
-		return (new Double(Constants.MAPTILESIZE * game.getZoom())).intValue();
+		return (new Double(Constants.MAPTILESIZE * orient.getZoom())).intValue();
 	}
 	
 	public int getScrX() {
-		return (new Double(x * game.getZoom() + Constants.WIDTH / 2 - game.getScrOnMapX() * game.getZoom())).intValue();
+		return (new Double(x * orient.getZoom() + Constants.WIDTH / 2 - orient.getScrOnMapX() * orient.getZoom())).intValue();
 	}
 
 	public int getScrY() {
-		return (new Double(y * game.getZoom() + Constants.HEIGHT / 2 - game.getScrOnMapY() * game.getZoom())).intValue();
+		return (new Double(y * orient.getZoom() + Constants.HEIGHT / 2 - orient.getScrOnMapY() * orient.getZoom())).intValue();
 	}
 	
 	public int getScrVelX() {
-		return (new Double(vx * game.getZoom())).intValue();
+		return (new Double(vx * orient.getZoom())).intValue();
 	}
 	
 	public int getScrVelY() {
-		return (new Double(vy * game.getZoom())).intValue();
+		return (new Double(vy * orient.getZoom())).intValue();
 	}
 	
 	public double getX() {
