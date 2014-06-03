@@ -2,7 +2,8 @@
     - [x] start a branch
     - [ ] write some tests
         - [ ] first test: Cloud new
-            - [ ] reconfigure to compile
+            - [x] refactor to compile
+            - [ ] stubs of interfaces implemented by Clouds class
         - [ ] more tests
     - [ ] way to visualise some collision tests etc.
 - [ ] write javadocs

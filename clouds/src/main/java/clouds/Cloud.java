@@ -22,9 +22,11 @@ public class Cloud extends GameObject {
 	private boolean carriesPlayer;
 	
 	protected boolean destroyed;
+	protected RandomSource randsrc;
 	
-	public Cloud(Orientation orient, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
+	public Cloud(Orientation orient, RandomSource randsrc, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
 		super(orient, ax, ay);
+		this.randsrc = randsrc;
 		color = aColor;
 		sizex = aSizeX;
 		sizey = aSizeY;
@@ -63,8 +65,8 @@ public class Cloud extends GameObject {
 	
 	private void setVelocity() {
 		do {
-			vx = -5 + (game.getRand(11));
-			vy = -5 + (game.getRand(11));
+			vx = -5 + (randsrc.getRand(11));
+			vy = -5 + (randsrc.getRand(11));
 		} while((vx==0) && (vy==0));
 		vx *= weightFactor;
 		vy *= weightFactor;
@@ -80,10 +82,10 @@ public class Cloud extends GameObject {
 	
 	public boolean onMap() {
 		return !destroyed
-		    && (x + sizex * Constants.MAPTILESIZE >= game.getMapMinX())
-		    && (x < game.getMapMinX() + Constants.MAPSIZEX)
-		    && (y + sizey * Constants.MAPTILESIZE >= game.getMapMinY())
-		    && (y < game.getMapMinY() + Constants.MAPSIZEY);
+		    && (x + sizex * Constants.MAPTILESIZE >= orient.getMapMinX())
+		    && (x < orient.getMapMinX() + Constants.MAPSIZEX)
+		    && (y + sizey * Constants.MAPTILESIZE >= orient.getMapMinY())
+		    && (y < orient.getMapMinY() + Constants.MAPSIZEY);
 	}
 	
     //x1, y1, x2, y2 - player's rectangle after movement
@@ -109,7 +111,7 @@ public class Cloud extends GameObject {
     
     private void generateShape() {
     	//generate shape as array of tiles
-		cloudShape = new CloudShape(game, sizex, sizey);
+		cloudShape = new CloudShape(randsrc, sizex, sizey);
 		shape = cloudShape.getShape();
 		weight = cloudShape.weight();
 		weightFactor = 50 / (((double)weight) + 10);
@@ -157,12 +159,13 @@ public class Cloud extends GameObject {
 				if(shape[xx][yy]) {
 					double tvx = vx;
 					double tvy = vy;
-					tvx += (-2 + game.getRand(40) / 10);
-					tvy += (-2 + game.getRand(40) / 10);
-					flyingTiles.add(new FlyingTile(game, x + (xx - 1) * Constants.MAPTILESIZE, y + (yy - 1) * Constants.MAPTILESIZE, tvx, tvy, color));
+					tvx += (-2 + randsrc.getRand(40) / 10);
+					tvy += (-2 + randsrc.getRand(40) / 10);
+					flyingTiles.add(new FlyingTile(orient, x + (xx - 1) * Constants.MAPTILESIZE, y + (yy - 1) * Constants.MAPTILESIZE, tvx, tvy, color));
 				}
 			}
 		}
+		//TODO instead of returning flying tiles, might use Container.addTile as elsewhere
 		return flyingTiles;
     }
     

@@ -6,4 +6,8 @@ public interface Orientation {
 	public double getScrOnMapX();
 	
 	public double getScrOnMapY();
+	
+	public double getMapMinX();
+
+	public double getMapMinY();
 }

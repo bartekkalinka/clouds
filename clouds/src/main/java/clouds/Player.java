@@ -14,9 +14,13 @@ public class Player extends GameObject {
 	private boolean inTheAir;
 	private Cloud carryingCloud;
 	private CloudsInterface ci;
+	private GameResult gameresult;
+	private Container container;
 	
-	Player(Clouds game, CloudsInterface ci) {
-		super(game, 0, 0);
+	Player(Orientation orient, Container container, GameResult gameresult, CloudsInterface ci) {
+		super(orient, 0, 0);
+		this.gameresult = gameresult;
+		this.container = container;
 		
 		this.ci = ci;
 		loadImages();
@@ -27,7 +31,7 @@ public class Player extends GameObject {
 	}
 	
 	public void update() {
-		if(game.getGameWon()) {
+		if(gameresult.getGameWon()) {
 			vx = 0;
 			vy = 0;
 			return;
@@ -60,7 +64,7 @@ public class Player extends GameObject {
 	    
 	    // collision detection
 	    inTheAir = true;  //unless there are any collisions below
-	    multipush(game.cloudCollisions(x, y, x + currImg[stepImg].getWidth(ci.getImageObserver()), y + currImg[stepImg].getHeight(ci.getImageObserver()), vx, vy));
+	    multipush(container.cloudCollisions(x, y, x + currImg[stepImg].getWidth(ci.getImageObserver()), y + currImg[stepImg].getHeight(ci.getImageObserver()), vx, vy));
 	}
 	
 	private void multipush(List<Collision> cols) {
@@ -96,8 +100,8 @@ public class Player extends GameObject {
 	}
 	
 	public void draw(Graphics gfxBuff) {
-		int scrWidth = Double.valueOf(currImg[stepImg].getWidth(null) * game.getZoom()).intValue();
-		int scrHeight = Double.valueOf(currImg[stepImg].getHeight(null) * game.getZoom()).intValue();
+		int scrWidth = Double.valueOf(currImg[stepImg].getWidth(null) * orient.getZoom()).intValue();
+		int scrHeight = Double.valueOf(currImg[stepImg].getHeight(null) * orient.getZoom()).intValue();
 		gfxBuff.drawImage(currImg[stepImg], getScrX(), getScrY(), scrWidth, scrHeight, null);
 	}
 	

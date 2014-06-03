@@ -7,12 +7,12 @@ public class CloudShape {
 	private int sizex;
 	private int sizey;
 	private boolean shape[][];
-	private Clouds game;
+	private RandomSource randsrc;
 	
-	public CloudShape(Clouds game, int sizex, int sizey) {
+	public CloudShape(RandomSource randsrc, int sizex, int sizey) {
 		this.sizex = sizex;
 		this.sizey = sizey;
-		this.game = game;
+		this.randsrc = randsrc;
 		do {
 			generateShape4();
 		} while (failBeautyStats());
@@ -39,7 +39,7 @@ public class CloudShape {
 		int [][] ret = new int[sizex][sizey];
 		for(int x=0; x<sizex; x++) {
 			for(int y=0; y<sizey; y++) {
-				ret[x][y] = game.getRand(1000);
+				ret[x][y] = randsrc.getRand(1000);
 			}
 		}
 		

@@ -6,8 +6,8 @@ import java.awt.Graphics;
 public class FlyingTile extends GameObject {
 	private Color color;
 	
-	public FlyingTile(Clouds agame, double ax, double ay, double velx, double vely, Color aColor) {
-		super(agame, ax, ay);
+	public FlyingTile(Orientation orient, double ax, double ay, double velx, double vely, Color aColor) {
+		super(orient, ax, ay);
 		this.color = aColor;
 		vx = velx;
 		vy = vely;
@@ -30,10 +30,10 @@ public class FlyingTile extends GameObject {
 	}
 	
 	public boolean onMap() {
-		return (x + Constants.MAPTILESIZE >= game.getMapMinX())
-		    && (x < game.getMapMinX() + Constants.MAPSIZEX)
-		    && (y + Constants.MAPTILESIZE >= game.getMapMinY())
-		    && (y < game.getMapMinY() + Constants.MAPSIZEY);
+		return (x + Constants.MAPTILESIZE >= orient.getMapMinX())
+		    && (x < orient.getMapMinX() + Constants.MAPSIZEX)
+		    && (y + Constants.MAPTILESIZE >= orient.getMapMinY())
+		    && (y < orient.getMapMinY() + Constants.MAPSIZEY);
 	}
 	
 	public boolean gettingCloserTo(double gx, double gy) {

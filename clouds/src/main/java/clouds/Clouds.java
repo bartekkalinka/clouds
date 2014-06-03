@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Clouds implements KeyListener, Orientation {
+public class Clouds implements KeyListener, Orientation, RandomSource, Container, GameResult {
 
 	private double zoom = 0.75;
 	private double screenOnMapX = 0;
@@ -40,9 +40,9 @@ public class Clouds implements KeyListener, Orientation {
 		
 		random = new Random(System.currentTimeMillis());
 		
-		director = new Director(this);
+		director = new Director(this, this, this);
 		
-		player = new Player(this, ci);
+		player = new Player(this, this, this, ci);
 		
 		flyingTiles = new ArrayList<FlyingTile>();
 		
@@ -54,12 +54,10 @@ public class Clouds implements KeyListener, Orientation {
 	}
 	
 	public void keyPressed(KeyEvent e) {
-		//TODO: gdy trzyma sie klawisz UP, to gracz nie skacze w sposob ciagly
-		// tak jak dzieje sie w wersji w Rubym
-		//TODO: toporne prze³¹czanie sie pomiedzy ruchem w lewo i w prawo
+		//TODO: in java version keys don't work as fluently as in ruby
 		switch(e.getKeyCode()) {
-		case KeyEvent.VK_ESCAPE: System.exit(0); break; //TODO usunac w wersji release
-		//case KeyEvent.VK_PAGE_UP: zoom *= 0.75; break;  //TODO usunac w wersji release
+		case KeyEvent.VK_ESCAPE: System.exit(0); break; //TODO add configuration
+		//case KeyEvent.VK_PAGE_UP: zoom *= 0.75; break;  //TODO add configuration
 		//case KeyEvent.VK_PAGE_DOWN: zoom *= 1.5; break;
 		case KeyEvent.VK_LEFT: player.moveStart(Direction.LEFT); break;
 		case KeyEvent.VK_RIGHT: player.moveStart(Direction.RIGHT); break;

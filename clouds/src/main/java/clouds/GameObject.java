@@ -8,8 +8,8 @@ public class GameObject {
 	protected double vy;
 	protected Orientation orient;
 	
-	GameObject(Orientation aorient, double ax, double ay) {
-		orient = aorient;
+	GameObject(Orientation orient, double ax, double ay) {
+		this.orient = orient;
 		x = ax;
 		y = ay;
 		vx = 0;
