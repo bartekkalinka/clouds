@@ -19,6 +19,7 @@ public class CloudTest {
 		private Random random;
 
 		//TODO remove duplication with Clouds class
+		//TODO use both this and non-random stub version
 		public RandomStub() {
 			random = new Random(System.currentTimeMillis());
 		}
@@ -30,6 +31,7 @@ public class CloudTest {
 
 	@Test
 	public void createCloud() {
+		//TODO setup/fixture
 		Orientation orientMock = mock(Orientation.class);
 		when(orientMock.getZoom()).thenReturn(0.75);
 		when(orientMock.getScrOnMapX()).thenReturn((double)0);
@@ -41,7 +43,15 @@ public class CloudTest {
 
 		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 5, 5, Color.red);
 
+		//TODO test what can be tested with current public Cloud interface
+		//onScreen
+		//onMap
+		//getMiddleTile
 		assertTrue(true);
+
+		//TODO what else should be tested and how?
+		//generated shape?
+		//everything else is a test where some Cloud's methods should be called
 	}
 
 }
