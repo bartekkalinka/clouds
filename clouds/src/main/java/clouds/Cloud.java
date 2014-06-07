@@ -24,6 +24,19 @@ public class Cloud extends GameObject {
 	protected boolean destroyed;
 	protected RandomSource randsrc;
 	
+	/* Cloud constructor
+	 * 
+	 * Aside from setting attributes according to parameters,
+	 * sets some internal attributes, generates random shape and vector
+	 * 
+	 * @param orient orientation service
+	 * @param randsrc random number service
+	 * @param ax start position in map coordinates - x coordinate
+	 * @param ay start position in map coordinates - y coordinate
+	 * @param aSizeX horizontal size in tiles
+	 * @param aSizeY vertical size in tiles
+	 * @param aColor color 
+	 */
 	public Cloud(Orientation orient, RandomSource randsrc, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
 		super(orient, ax, ay);
 		this.randsrc = randsrc;
@@ -73,6 +86,9 @@ public class Cloud extends GameObject {
 		//System.out.print("\nvx " + vx + " vy " + vy + " weightFactor " + weightFactor);
 	}
 
+	/*
+	 * @return is (any part of) cloud visible on screen
+	 */
 	public boolean onScreen() {
 		return (getScrX() + sizex * getTileSize() >= 0)
 		    && (getScrX() < Constants.WIDTH)
@@ -80,6 +96,9 @@ public class Cloud extends GameObject {
 		    && (getScrY() < Constants.HEIGHT);
 	}
 	
+	/*
+	 * @return is (any part of) cloud on map buffer
+	 */	
 	public boolean onMap() {
 		return !destroyed
 		    && (x + sizex * Constants.MAPTILESIZE >= orient.getMapMinX())

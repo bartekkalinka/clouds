@@ -30,8 +30,8 @@ public class CloudTest {
 	}
 
 	@Test
-	public void createCloud() {
-		//TODO setup/fixture
+	public void orientation() {
+		//setup/fixture
 		Orientation orientMock = mock(Orientation.class);
 		when(orientMock.getZoom()).thenReturn(0.75);
 		when(orientMock.getScrOnMapX()).thenReturn((double)0);
@@ -40,18 +40,26 @@ public class CloudTest {
 		when(orientMock.getMapMinY()).thenReturn((double)-Constants.MAPSIZEY/2);
 
 		RandomSource randomStub = new RandomStub();
-
+		
+		//test
 		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 5, 5, Color.red);
 
-		//TODO test what can be tested with current public Cloud interface
-		//onScreen
-		//onMap
-		//getMiddleTile
-		assertTrue(true);
-
-		//TODO what else should be tested and how?
-		//generated shape?
-		//everything else is a test where some Cloud's methods should be called
+		assertTrue(cloud.onScreen());
+		assertTrue(cloud.onMap());
+		
+		int halfScreenOnMapY = (new Double(Constants.HEIGHT / (orientMock.getZoom() * 2))).intValue();
+		
+		cloud = new Cloud(orientMock, randomStub, 
+				0, -halfScreenOnMapY - 10 * Constants.MAPTILESIZE,
+				5, 5, Color.red);
+		
+		assertFalse(cloud.onScreen());
+		assertTrue(cloud.onMap());
+		
+		cloud = new Cloud(orientMock, randomStub, Constants.MAPSIZEX / 2 + 10, 0, 5, 5, Color.red);
+		
+		assertFalse(cloud.onScreen());
+		assertFalse(cloud.onMap());
 	}
 
 }

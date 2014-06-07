@@ -26,14 +26,23 @@ public class GameObject {
 		y -= vy;
 	}
 	
+	/*
+	 * @return size of one tile on screen
+	 */
 	public int getTileSize() {
 		return (new Double(Constants.MAPTILESIZE * orient.getZoom())).intValue();
 	}
 	
+	/*
+	 * @return horizontal position in screen coordinates counting from left to right
+	 */
 	public int getScrX() {
 		return (new Double(x * orient.getZoom() + Constants.WIDTH / 2 - orient.getScrOnMapX() * orient.getZoom())).intValue();
 	}
 
+	/*
+	 * @return vertical position in screen coordinates counting from top to bottom
+	 */
 	public int getScrY() {
 		return (new Double(y * orient.getZoom() + Constants.HEIGHT / 2 - orient.getScrOnMapY() * orient.getZoom())).intValue();
 	}
