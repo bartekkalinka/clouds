@@ -8,20 +8,13 @@ public class Director {
 	private Orientation orient;
 	private Container container;
 	
-	private double[] randomSpot() {
-		double coord[] = new double[2];
-		coord[0] = randsrc.getRand(Constants.MAPSIZEX) + orient.getMapMinX();
-		coord[1] = randsrc.getRand(Constants.MAPSIZEY) + orient.getMapMinY();
-		return coord;
-	}
-	
 	public Director(Orientation orient, RandomSource randsrc, Container container) {
 		this.randsrc = randsrc;
 		this.orient = orient;
 		this.container = container;
 		
 		for(int i=0; i<Constants.CLOUDSNUM; i++) {
-			randomCloud();
+			standardCloud();
 		}
 		
 		goldenCloud();
@@ -29,25 +22,20 @@ public class Director {
 	
 	public void update() {
 		if(container.getCloudsNum() < Constants.CLOUDSNUM) {
-			randomCloud();
+			standardCloud();
 		}
 	}
 	
-	public void goldenCloud() {
-		int sizex = randsrc.getRand(15) + 5;
-		int sizey = randsrc.getRand(9) + 5;
-		double coord[] = randomSpot();
-		GoldenCloud gc = new GoldenCloud(orient, randsrc, container, coord[0], coord[1], sizex, sizey);
-		
-		//if on screen, move it out, so it enters the screen soon
-		while(gc.onScreen()) {
-			gc.moveBackwards();
-		}
-		
+	private void goldenCloud() {
+		GoldenCloud gc = (GoldenCloud)randomCloud(true, null);
 		container.setGoldenCloud(gc);
 	}
 	
-	public void randomCloud() {
+	/* 
+	 * Create a new standard cloud with many parameters taken from random numbers source
+	 * 
+	 */
+	private void standardCloud() {
 		int c = randsrc.getRand(4);
 		Color color = Color.red;
 		switch(c) {
@@ -57,19 +45,57 @@ public class Director {
 		case 3: color = Color.green; break;
 		}
   
-		int sizex = randsrc.getRand(15) + 5;
-		int sizey = randsrc.getRand(9) + 5;
+		Cloud cloud = randomCloud(false, color);
 		
+		container.addCloud(cloud);
+	}
+	
+	private Cloud randomCloud(boolean golden, Color color) {
+		int size[] = randomSize();
 		double coord[] = randomSpot();
+		double vel[] = randomVelocity();
+		ShapeGenerator sg = new ShapeGenerator(randsrc, size[0], size[1]);
+		Shape shape = sg.generateShape();
 		
-		Cloud cloud;
-		cloud =	new Cloud(orient, randsrc, coord[0], coord[1], sizex, sizey, color);
+		Cloud cloud = null;
+		
+		if(golden) {
+			cloud = new GoldenCloud(orient, randsrc, container, coord[0], coord[1], 
+					vel[0], vel[1],	shape);
+		}
+		else {
+			cloud =	new Cloud(orient, randsrc, coord[0], coord[1], vel[0], vel[1], 
+					shape, color);
+		}
 		
 		//if on screen, move it out, so it enters the screen soon
 		while(cloud.onScreen()) {
 			cloud.moveBackwards();
 		}
 		
-		container.addCloud(cloud);
+		return cloud;
 	}
+	
+	private int[] randomSize() {
+		int[] size = new int[2];
+		size[0] = randsrc.getRand(15) + 5;
+		size[1] = randsrc.getRand(9) + 5;		
+		return size;
+	}
+	
+	private double[] randomVelocity() {
+		double vel[] = new double[2];
+		do {
+			vel[0] = -5 + (randsrc.getRand(11));
+			vel[1] = -5 + (randsrc.getRand(11));
+		} while((vel[0]==0) && (vel[1]==0));
+		return vel;		
+	}
+	
+	private double[] randomSpot() {
+		double coord[] = new double[2];
+		coord[0] = randsrc.getRand(Constants.MAPSIZEX) + orient.getMapMinX();
+		coord[1] = randsrc.getRand(Constants.MAPSIZEY) + orient.getMapMinY();
+		return coord;
+	}	
 }

@@ -11,8 +11,7 @@ public class Cloud extends GameObject {
 	private Color color;
 	private int sizex;
 	private int sizey;
-	private CloudShape cloudShape;
-	private boolean shape[][];
+	private Shape shape;
 	private BufferedImage shapeImage;
 	private CollisionDetector collisionDetector;
 	private int weight;
@@ -33,23 +32,27 @@ public class Cloud extends GameObject {
 	 * @param randsrc random number service
 	 * @param ax start position in map coordinates - x coordinate
 	 * @param ay start position in map coordinates - y coordinate
-	 * @param aSizeX horizontal size in tiles
-	 * @param aSizeY vertical size in tiles
+	 * @param vx initial momentum - x coordinate
+	 * @param vy initial momentum - y coordinate
+	 * @param shape cloud's shape including size
 	 * @param aColor color 
 	 */
-	public Cloud(Orientation orient, RandomSource randsrc, double ax, double ay, int aSizeX, int aSizeY, Color aColor) {
+	public Cloud(Orientation orient, RandomSource randsrc, 
+			double ax, double ay, double vx, double vy,
+			Shape shape, Color aColor) {
 		super(orient, ax, ay);
 		this.randsrc = randsrc;
 		color = aColor;
-		sizex = aSizeX;
-		sizey = aSizeY;
+		sizex = shape.sizex;
+		sizey = shape.sizey;
+		this.shape = shape;
 		weight = 0;
 		weightFactor = 0;
 		carriesPlayer = false;
 		destroyed = false;
 		
-		generateShape();
-		setVelocity();
+		generateImage();
+		setVelocity(vx, vy);
 		generateCollisionShape();
 		
 		energy = weight * Constants.ENERGYSLOWFACTOR;
@@ -64,26 +67,17 @@ public class Cloud extends GameObject {
 	public void draw(Graphics gfxBuff) {
 		gfxBuff.drawImage(shapeImage, getScrX(), getScrY(), sizex * getTileSize(), 
 				sizey * getTileSize(), null);
-		//debugDraw();
 	}
 	
-	private void debugDraw() {
-		if(carriesPlayer) {
-			System.out.print("\ncarriesPlayer");
-		}
-		if((vx==0) && (vy==0)) {
-			System.out.print("\nstopped cloud");
-		}
-	}
-	
-	private void setVelocity() {
-		do {
-			vx = -5 + (randsrc.getRand(11));
-			vy = -5 + (randsrc.getRand(11));
-		} while((vx==0) && (vy==0));
-		vx *= weightFactor;
-		vy *= weightFactor;
-		//System.out.print("\nvx " + vx + " vy " + vy + " weightFactor " + weightFactor);
+	/*
+	 * Set velocity based on momentum and weight
+	 * 
+	 * @param vx momentum x coordinate
+	 * @param vy momentum y coordintate
+	 */
+	private void setVelocity(double vx, double vy) {
+		this.vx = vx * weightFactor;
+		this.vy = vy * weightFactor;
 	}
 
 	/*
@@ -128,11 +122,9 @@ public class Cloud extends GameObject {
     	return false;
     }
     
-    private void generateShape() {
+    private void generateImage() {
     	//generate shape as array of tiles
-		cloudShape = new CloudShape(randsrc, sizex, sizey);
-		shape = cloudShape.getShape();
-		weight = cloudShape.weight();
+		weight = shape.getWeight();
 		weightFactor = 50 / (((double)weight) + 10);
 		
 		//draw array of tiles onto buffered image
@@ -142,7 +134,7 @@ public class Cloud extends GameObject {
 		gfxBuff.setColor(color);		
 		for(int x=0; x<sizex; x++) {
 			for(int y=0; y<sizey; y++) {
-				if(shape[x][y]) {
+				if(shape.shape[x][y]) {
 					int qx = x * getTileSize();
 					int qy = y * getTileSize();
 					gfxBuff.fillRect(qx, qy, getTileSize(), getTileSize());
@@ -152,7 +144,7 @@ public class Cloud extends GameObject {
     }
     
     private void generateCollisionShape() {
-    	collisionDetector = new CollisionDetector(shape, sizex, sizey);
+    	collisionDetector = new CollisionDetector(shape.shape, sizex, sizey); //TODO use Shape
     }
     
     private void energyAndVelocityUpdate() {
@@ -175,7 +167,7 @@ public class Cloud extends GameObject {
     	List<FlyingTile> flyingTiles = new ArrayList<FlyingTile>();
 		for(int xx=0; xx<sizex; xx++) {
 			for(int yy=0; yy<sizey; yy++) {
-				if(shape[xx][yy]) {
+				if(shape.shape[xx][yy]) {
 					double tvx = vx;
 					double tvy = vy;
 					tvx += (-2 + randsrc.getRand(40) / 10);
@@ -188,13 +180,14 @@ public class Cloud extends GameObject {
 		return flyingTiles;
     }
     
+    //TODO move to Shape
     protected int[] getMiddleTile() {
     	int chosenTile = weight / 2;
     	int currTile = 0;
     	
 		for(int xx=0; xx<sizex; xx++) {
 			for(int yy=0; yy<sizey; yy++) {
-				if(shape[xx][yy]) {
+				if(shape.shape[xx][yy]) {
 					currTile++;
 					if(chosenTile == currTile) {
 						int[] ret = new int[2];

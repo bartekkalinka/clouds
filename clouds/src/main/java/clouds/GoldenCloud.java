@@ -8,11 +8,12 @@ public class GoldenCloud extends Cloud {
 	private double vyNext;
 	Container container;
 	
-	GoldenCloud(Orientation orient, RandomSource randsrc, Container container, double ax, double ay, int aSizeX, int aSizeY) {
-		super(orient, randsrc, ax, ay, aSizeX, aSizeY, Color.yellow);
+	GoldenCloud(Orientation orient, RandomSource randsrc, Container container, 
+			double ax, double ay, double vx, double vy, Shape shape) {
+		super(orient, randsrc, ax, ay, vx, vy, shape, Color.yellow);
 		this.container = container;
-		vxNext = vx;
-		vxNext = vy;
+		vxNext = this.vx;
+		vxNext = this.vy;
 	}
 	
 	public void update() {

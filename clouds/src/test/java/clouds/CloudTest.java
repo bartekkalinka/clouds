@@ -42,7 +42,8 @@ public class CloudTest {
 		RandomSource randomStub = new RandomStub();
 		
 		//test
-		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 5, 5, Color.red);
+		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 1, 1, 
+				(new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
 
 		assertTrue(cloud.onScreen());
 		assertTrue(cloud.onMap());
@@ -51,12 +52,13 @@ public class CloudTest {
 		
 		cloud = new Cloud(orientMock, randomStub, 
 				0, -halfScreenOnMapY - 10 * Constants.MAPTILESIZE,
-				5, 5, Color.red);
+				1, 1, (new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
 		
 		assertFalse(cloud.onScreen());
 		assertTrue(cloud.onMap());
 		
-		cloud = new Cloud(orientMock, randomStub, Constants.MAPSIZEX / 2 + 10, 0, 5, 5, Color.red);
+		cloud = new Cloud(orientMock, randomStub, Constants.MAPSIZEX / 2 + 10, 0, 
+				1, 1, (new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
 		
 		assertFalse(cloud.onScreen());
 		assertFalse(cloud.onMap());
