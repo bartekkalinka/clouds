@@ -106,6 +106,11 @@ public class Cloud extends GameObject {
     	return collisionDetector.approxCollision(x1, y1, x2, y2, x, y);
     }
     
+    /*
+     * @param x1, y1, x2, y2 - Player's rectangle after movement (left, top, right, bottom)
+     * @param pvelx, pvely - Player's velocity vector
+     * @return list of collisions between Player's and Cloud's edges
+     */
     public List<Collision> detailedCollisions(double x1, double y1, double x2, double y2, 
 			double pvelx, double pvely) {
     	List<Collision> cols = collisionDetector.detailedCollisions(x1, y1, x2, y2, pvelx, pvely, x, y, vx, vy);

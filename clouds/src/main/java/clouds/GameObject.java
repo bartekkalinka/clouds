@@ -55,28 +55,8 @@ public class GameObject {
 		return (new Double(vy * orient.getZoom())).intValue();
 	}
 	
-	public double getX() {
-		return x;
+	public double[] getPos() {
+		return new double[] {x, y};
 	}
 	
-	public void setX(double ax) {
-		x = ax;
-	}
-	
-	public double getY() {
-		return y;
-	}
-	
-	public void setY(double ay) {
-		y = ay;
-	}	
-	
-	public double getVX() {
-		return vx;
-	}
-	
-	public double getVY() {
-		return vy;
-	}
-
 }
