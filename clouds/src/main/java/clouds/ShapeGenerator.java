@@ -3,6 +3,8 @@ package clouds;
 import java.util.ArrayList;
 import java.util.List;
 
+import clouds.rand.RandomSource;
+
 public class ShapeGenerator {
 	private Shape s;
 	private RandomSource randsrc;

@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+import clouds.rand.RandomSource;
+
 public class Cloud extends GameObject {
 
 	private Color color;

@@ -1,7 +1,12 @@
 package clouds;
 
 import java.awt.Canvas;
+
 import javax.swing.JFrame;
+
+import clouds.rand.RandomSource;
+import clouds.rand.RandomSourceImpl;
+
 import java.awt.event.KeyListener;
 import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
@@ -14,7 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Clouds implements KeyListener, Orientation, RandomSource, Container, GameResult {
+public class Clouds implements KeyListener, Orientation, Container, GameResult {
 
 	private double zoom = 0.75;
 	private double screenOnMapX = 0;
@@ -31,16 +36,16 @@ public class Clouds implements KeyListener, Orientation, RandomSource, Container
 	
 	private CloudsInterface cloudsInterface;
 	
-	private Random random;
+	private RandomSource random;
 	
 	private boolean gameWon = false;
 	
 	public Clouds(CloudsInterface ci) {
 		clouds = new ArrayList<Cloud>();
 		
-		random = new Random(System.currentTimeMillis());
+		random = new RandomSourceImpl();
 		
-		director = new Director(this, this, this);
+		director = new Director(this, random, this);
 		
 		player = new Player(this, this, this, ci);
 		
@@ -228,10 +233,6 @@ public class Clouds implements KeyListener, Orientation, RandomSource, Container
 	
 	public double getScrOnMapY() {
 		return screenOnMapY;
-	}
-	
-	public int getRand(int n) {
-		return random.nextInt(n);
 	}
 	
 	public void addTile(FlyingTile tile) {

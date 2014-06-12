@@ -2,6 +2,8 @@ package clouds;
 
 import java.awt.Color;
 
+import clouds.rand.RandomSource;
+
 public class Director {
 
 	private RandomSource randsrc;

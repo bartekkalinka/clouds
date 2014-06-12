@@ -12,28 +12,15 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import clouds.rand.RandomSource;
+import clouds.rand.RandomSourceImpl;
 import static org.mockito.Mockito.*;
 
 @RunWith(JUnit4.class)
 public class CloudTest {
 	
 	private Orientation orientMock;
-	private RandomSource randomStub;
-
-	class RandomStub implements RandomSource
-	{
-		private Random random;
-
-		//TODO remove duplication with Clouds class
-		//TODO use both this and non-random stub version
-		public RandomStub() {
-			random = new Random(System.currentTimeMillis());
-		}
-
-		public int getRand(int n) {
-			return random.nextInt(n);
-		}
-	}
+	private RandomSource randSrc;
 	
 	public void setUp(double zoom, double [] scrOnMapPos) {
 		orientMock = mock(Orientation.class);
@@ -43,7 +30,7 @@ public class CloudTest {
 		when(orientMock.getMapMinX()).thenReturn(scrOnMapPos[0]-Constants.MAPSIZEX/2);
 		when(orientMock.getMapMinY()).thenReturn(scrOnMapPos[1]-Constants.MAPSIZEY/2);
 
-		randomStub = new RandomStub();		
+		randSrc = new RandomSourceImpl();		
 	}
 
 	@Test
@@ -51,23 +38,23 @@ public class CloudTest {
 		setUp(.75, new double [] {0, 0});
 
 		//test
-		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 1, 1, 
-				(new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
+		Cloud cloud = new Cloud(orientMock, randSrc, 0, 0, 1, 1, 
+				(new ShapeGenerator(randSrc, 5,5)).generateShape(), Color.red);
 
 		assertTrue(cloud.onScreen());
 		assertTrue(cloud.onMap());
 		
 		int halfScreenOnMapY = (new Double(Constants.HEIGHT / (orientMock.getZoom() * 2))).intValue();
 		
-		cloud = new Cloud(orientMock, randomStub, 
+		cloud = new Cloud(orientMock, randSrc, 
 				0, -halfScreenOnMapY - 10 * Constants.MAPTILESIZE,
-				1, 1, (new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
+				1, 1, (new ShapeGenerator(randSrc, 5,5)).generateShape(), Color.red);
 		
 		assertFalse(cloud.onScreen());
 		assertTrue(cloud.onMap());
 		
-		cloud = new Cloud(orientMock, randomStub, Constants.MAPSIZEX / 2 + 10, 0, 
-				1, 1, (new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
+		cloud = new Cloud(orientMock, randSrc, Constants.MAPSIZEX / 2 + 10, 0, 
+				1, 1, (new ShapeGenerator(randSrc, 5,5)).generateShape(), Color.red);
 		
 		assertFalse(cloud.onScreen());
 		assertFalse(cloud.onMap());
@@ -84,8 +71,8 @@ public class CloudTest {
 
 		//Velocity is constant
 		double startPos[] = {0, 0};
-		Cloud cloud = new Cloud(orientMock, randomStub, startPos[0], startPos[1], 1, 1, 
-				(new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
+		Cloud cloud = new Cloud(orientMock, randSrc, startPos[0], startPos[1], 1, 1, 
+				(new ShapeGenerator(randSrc, 5,5)).generateShape(), Color.red);
 		
 		cloud.update();
 		double pos2[] = cloud.getPos();
@@ -97,11 +84,11 @@ public class CloudTest {
 		
 		//Velocity depends on weight/size
 		startPos = new double[] {0, 0};
-		cloud = new Cloud(orientMock, randomStub, startPos[0], startPos[1], 1, 1, 
-				(new ShapeGenerator(randomStub, 5, 5)).generateShape(), Color.red);
+		cloud = new Cloud(orientMock, randSrc, startPos[0], startPos[1], 1, 1, 
+				(new ShapeGenerator(randSrc, 5, 5)).generateShape(), Color.red);
 		
-		Cloud cloud2 = new Cloud(orientMock, randomStub, startPos[0], startPos[1], 1, 1, 
-				(new ShapeGenerator(randomStub, 20, 20)).generateShape(), Color.red);
+		Cloud cloud2 = new Cloud(orientMock, randSrc, startPos[0], startPos[1], 1, 1, 
+				(new ShapeGenerator(randSrc, 20, 20)).generateShape(), Color.red);
 		
 		cloud.update();
 		cloud2.update();
@@ -115,7 +102,7 @@ public class CloudTest {
 		startPos = new double[] {0, 0};
 		boolean shape[][] = {{true, true, true}, {true, true, true}, {true, true, true}};
 		Shape cloudShape = new Shape(3, 3, shape);
-		cloud = new Cloud(orientMock, randomStub, startPos[0], startPos[1], 0.05, -1, 
+		cloud = new Cloud(orientMock, randSrc, startPos[0], startPos[1], 0.05, -1, 
 				cloudShape, Color.red);
 		
 		//mock collision with Player; 0.1 - Player's bottom coordinate AFTER movement

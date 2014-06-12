@@ -2,6 +2,8 @@ package clouds;
 
 import java.awt.Color;
 
+import clouds.rand.RandomSource;
+
 public class GoldenCloud extends Cloud {
 	
 	private double vxNext;
