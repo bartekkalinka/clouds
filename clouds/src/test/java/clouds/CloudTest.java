@@ -7,6 +7,7 @@ import java.util.Random;
 
 import static org.junit.Assert.*;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -15,6 +16,9 @@ import static org.mockito.Mockito.*;
 
 @RunWith(JUnit4.class)
 public class CloudTest {
+	
+	private Orientation orientMock;
+	private RandomSource randomStub;
 
 	class RandomStub implements RandomSource
 	{
@@ -30,19 +34,22 @@ public class CloudTest {
 			return random.nextInt(n);
 		}
 	}
+	
+	public void setUp(double zoom, double [] scrOnMapPos) {
+		orientMock = mock(Orientation.class);
+		when(orientMock.getZoom()).thenReturn(zoom);
+		when(orientMock.getScrOnMapX()).thenReturn(scrOnMapPos[0]);
+		when(orientMock.getScrOnMapY()).thenReturn(scrOnMapPos[1]);
+		when(orientMock.getMapMinX()).thenReturn(scrOnMapPos[0]-Constants.MAPSIZEX/2);
+		when(orientMock.getMapMinY()).thenReturn(scrOnMapPos[1]-Constants.MAPSIZEY/2);
+
+		randomStub = new RandomStub();		
+	}
 
 	@Test
 	public void orientation() {
-		//setup/fixture
-		Orientation orientMock = mock(Orientation.class);
-		when(orientMock.getZoom()).thenReturn(0.75);
-		when(orientMock.getScrOnMapX()).thenReturn((double)0);
-		when(orientMock.getScrOnMapY()).thenReturn((double)0);
-		when(orientMock.getMapMinX()).thenReturn((double)-Constants.MAPSIZEX/2);
-		when(orientMock.getMapMinY()).thenReturn((double)-Constants.MAPSIZEY/2);
+		setUp(.75, new double [] {0, 0});
 
-		RandomSource randomStub = new RandomStub();
-		
 		//test
 		Cloud cloud = new Cloud(orientMock, randomStub, 0, 0, 1, 1, 
 				(new ShapeGenerator(randomStub, 5,5)).generateShape(), Color.red);
@@ -64,6 +71,7 @@ public class CloudTest {
 		
 		assertFalse(cloud.onScreen());
 		assertFalse(cloud.onMap());
+		
 	}
 	
 	private double[] measureVelocity(double[] pos1, double[] pos2) {
@@ -72,17 +80,8 @@ public class CloudTest {
 	
 	@Test
 	public void update() {
-		//setup/fixture
-		//TODO remove duplication with CloudTest.orientation
-		Orientation orientMock = mock(Orientation.class);
-		when(orientMock.getZoom()).thenReturn(0.75);
-		when(orientMock.getScrOnMapX()).thenReturn((double)0);
-		when(orientMock.getScrOnMapY()).thenReturn((double)0);
-		when(orientMock.getMapMinX()).thenReturn((double)-Constants.MAPSIZEX/2);
-		when(orientMock.getMapMinY()).thenReturn((double)-Constants.MAPSIZEY/2);
+		setUp(.75, new double [] {10, 10});
 
-		RandomSource randomStub = new RandomStub();		
-		
 		//Velocity is constant
 		double startPos[] = {0, 0};
 		Cloud cloud = new Cloud(orientMock, randomStub, startPos[0], startPos[1], 1, 1, 
