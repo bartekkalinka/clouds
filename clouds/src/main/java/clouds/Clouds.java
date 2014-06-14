@@ -1,8 +1,5 @@
 package clouds;
 
-import java.awt.Canvas;
-
-import javax.swing.JFrame;
 
 import clouds.rand.RandomSource;
 import clouds.rand.RandomSourceImpl;
@@ -17,7 +14,6 @@ import java.awt.Font;
 import java.awt.image.ImageObserver;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 public class Clouds implements KeyListener, Orientation, Container, GameResult {
 

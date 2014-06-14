@@ -1,11 +1,6 @@
 package cloudsdesktop;
 
-import java.awt.Canvas;
-
-import javax.swing.JFrame;
-
 import clouds.Clouds;
-import clouds.Constants;
 
 public class CloudsDesktop {
 	

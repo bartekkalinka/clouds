@@ -1,12 +1,9 @@
 package cloudsdesktop;
 
 import java.awt.Canvas;
-import java.awt.Graphics;
-import java.awt.event.KeyListener;
 import java.awt.image.BufferedImage;
 import java.awt.Image;
 import java.awt.image.ImageObserver;
-import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;

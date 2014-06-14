@@ -2,7 +2,6 @@ package clouds;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
@@ -108,6 +107,7 @@ public class CloudTest {
 		
 		//mock collision with Player; 0.1 - Player's bottom coordinate AFTER movement
 		cloud.detailedCollisions(0, -Constants.MAPTILESIZE, 3 * Constants.MAPTILESIZE, 0.1, 0, 0.1);
+		assertTrue(cloud.getCarriesPlayer());
 		
 		cloud.update();
 		pos2 = cloud.getPos();

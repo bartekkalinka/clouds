@@ -1,8 +1,5 @@
 package clouds;
 
-import java.util.List;
-import java.util.ArrayList;
-
 public class Shape {
 	public int sizex;
 	public int sizey;
