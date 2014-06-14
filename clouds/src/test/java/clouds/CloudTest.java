@@ -1,13 +1,14 @@
 package clouds;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.awt.image.ImageObserver;
 
 import static org.junit.Assert.*;
 
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -119,7 +120,32 @@ public class CloudTest {
 		
 	}
 	
-	//TODO test draw
+	@Test
+	public void draw() {
+		setUp(.75, new double [] {10, 10});
+		
+		//mockist approach
+		Graphics graphMock = mock(Graphics.class);
+		Cloud cloud = new Cloud(orientMock, randSrc, 0, 0, 1, 1, 
+				(new ShapeGenerator(randSrc, 5,5)).generateShape(), Color.blue);
+		cloud.draw(graphMock);
+		verify(graphMock).drawImage((Image) anyObject(), anyInt(), anyInt(), anyInt(), anyInt(), (ImageObserver) isNull());
+		
+		//statist approach
+		BufferedImage imgBuff = new BufferedImage(Constants.WIDTH, Constants.HEIGHT, BufferedImage.TYPE_INT_ARGB);
+		Graphics gfxBuff = imgBuff.getGraphics();
+		boolean shape[][] = {{true, false}, {false, true}};
+		Shape cloudShape = new Shape(2, 2, shape);
+		cloud = new Cloud(orientMock, randSrc, 0, 0, 1, 1, cloudShape, Color.blue);
+		cloud.draw(gfxBuff);
+		int pix = imgBuff.getRGB(cloud.getScrX(), cloud.getScrY());
+		assertEquals(Color.blue.getRGB(), pix);
+		pix = imgBuff.getRGB(cloud.getScrX() + cloud.getTileSize() - 1, cloud.getScrY());
+		assertEquals(Color.blue.getRGB(), pix);
+		pix = imgBuff.getRGB(cloud.getScrX() + cloud.getTileSize(), cloud.getScrY());
+		assertEquals(0, pix);
+	}
+
 	//TODO test GameObject
 
 }
