@@ -29,6 +29,7 @@ public class GameObject {
 	/*
 	 * @return size of one tile on screen
 	 */
+	//TODO move to Orientation
 	public int getTileSize() {
 		return (new Double(Constants.MAPTILESIZE * orient.getZoom())).intValue();
 	}

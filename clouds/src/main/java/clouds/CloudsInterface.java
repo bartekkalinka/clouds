@@ -10,5 +10,6 @@ public interface CloudsInterface {
 	
 	public Image[] getImages();
 	
+	//TODO no need for imageObserver?  in Player img.getWidth null works?
 	public ImageObserver getImageObserver();
 }
