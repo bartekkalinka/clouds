@@ -2,7 +2,7 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>clouds_main</groupId>
+  <groupId>clouds</groupId>
   <artifactId>clouds_main</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
@@ -10,8 +10,8 @@
   <name>clouds_main</name>
 
   <modules>
-    <module>../clouds_desktop</module>
     <module>../clouds</module>
+    <module>../clouds_desktop</module>
   </modules>
 
 

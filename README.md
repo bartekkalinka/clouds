@@ -18,6 +18,7 @@ mvn install
 cd ..
 
 clouds.cmd (on windows)
+./clouds.sh (on linux)
 
 #### How to play
 
